@@ -1,5 +1,5 @@
 from products import products
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -22,6 +22,17 @@ def getProduct(product_name):
         return jsonify({"product": productsFound[0]})
     return jsonify({"message": "Product not found"})
     # return jsonify(product_name)
+
+
+@app.route('/product', methods=['POST'])
+def addProduct():
+    new_product = {
+        "name": request.json['name'],
+        "price": request.json['price'],
+        "quentity": request.json['quantity']
+    }
+    products.append(new_product)
+    return jsonify({"message": "Product added succesfully", "product": products})
 
 
 if __name__ == '__main__':
