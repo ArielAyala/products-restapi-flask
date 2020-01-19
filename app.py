@@ -35,5 +35,20 @@ def addProduct():
     return jsonify({"message": "Product added succesfully", "product": products})
 
 
+@app.route('/product/<string:product_name>', methods=['PUT'])
+def editProduct(product_name):
+    productFound = [
+        product for product in products if product['name'] == product_name]
+    if (len(productFound) > 0):
+        productFound[0]['name'] = request.json['name'],
+        productFound[0]['price'] = request.json['price'],
+        productFound[0]['quantity'] = request.json['quantity']
+        return jsonify({"message": "Product Updated",
+                        "product": productFound[0]})
+    return jsonify({"message": "Product Not Found"})
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=4000)
